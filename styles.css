@@ -1,1 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Science+Gothic:wght@100..900&display=swap');
+
 [v-cloak] {display: none;}
+* {font-family: 'Science Gothic', Arial, sans-serif;}
+
+#windowManager {
+    width: 0;
+    height: 0;
+}
+
+.window {
+    position: absolute;
+    border: 2px solid #000;
+    background-color: #fff;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    resize: both;
+    overflow: hidden;
+}
+
+.window iframe {
+    width: 100%;
+    height: calc(100% - 30px);
+}
+
+.window #titlebar {
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    height: 20px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.window #titlebar h2 {
+    font-weight: bold;
+    margin: 0;
+    margin-left: 5px;
+}
+
+.window #titlebar button {
+    background-color: #eb3030;
+    border: none;
+    color: white;
+    padding: 2px 8px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+}
+
+.window iframe {
+    border: none;
+    display: block;
+}
+
+.opening {
+    animation: fade;
+    animation-delay: 0.1s;
+    animation-duration: 0.2s;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+    animation-timing-function: steps(2);
+}
+
+
+.closing {
+    animation: fade;
+    animation-delay: 0.1s;
+    animation-duration: 0.2s;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-timing-function: steps(2);
+}
+
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

@@ -13,5 +13,19 @@
 </head>
 <body v-cloak>
     <h1>{{ message }}</h1>
+
+    <div id="windowManager" v-for="window in windows" :key="window.id">
+        <div :class="['window', window.state]" :style="{ top: window.y + 'px', left: window.x + 'px',
+                    width: window.width + 'px', height: window.height + 'px',
+                    minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px' }">
+
+            <div id="titlebar">
+                <h2>{{ window.title }}</h2>
+                <button @click="closeWindow(window.id)">X</button>
+            </div>
+            
+            <iframe :src="window.url" frameborder="0"></iframe>
+        </div>
+    </div>
 </body>
 </html>
