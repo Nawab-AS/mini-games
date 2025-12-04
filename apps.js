@@ -6,7 +6,6 @@ const apps = {
         "description": "Welcome to Mini Games!",
         "category": "Utility",
 
-        "title": "Welcome",
         "width": 600,
         "height": 400,
         "x": 100,

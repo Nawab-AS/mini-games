@@ -158,6 +158,7 @@
 #searchBox {
     margin: 0;
     width: 200px;
+    padding-left: 10px;
     height: calc(var(--taskbar-height) * 0.95);
     background-color: #333;
     border: none;
@@ -185,6 +186,26 @@
     gap: 5px;
 }
 
+#appList div {
+    color: #ccc;
+    height: var(--taskbar-height);
+    padding: 0 7px;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition-duration: 0.2s;
+}
+
+#appList div.open {
+    height: calc(var(--taskbar-height) - 3px);
+    border-bottom: 3px solid #fff;
+    color: #fff;
+}
+
+#appList div:hover {
+    background-color: var(--taskbar-hover-color);
+    color: #fff;
+}
 
 #timeDisplay {
     height: var(--taskbar-height);

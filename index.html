@@ -14,12 +14,12 @@
         <div id="taskbar">
             <div class="leftSection">
                 <button id="linuxButton" @click="openSearch"></button>
-                <input id="searchBox" placeholder="Type here to search" @focus="openSearch" @blur="closeSearch" v-model="search"/>
+                <input id="searchBox" placeholder="Type here to search!" @focus="openSearch" @blur="closeSearch" v-model="search"/>
 
-                <div id="appList" v-for="window in windows" :key="window.id">
-                    <div>
-                        <img :src="window.icon" alt="" width="24" height="24"/>
-                        <p>{{ window.title }}</p>
+                <div id="appList" v-for="(app, appName) in apps" :key="appName">
+                    <div @click="createWindow(appName)" :class="[windows.some(w => w.app === appName) ? 'open' : '']">
+                        <img :src="app.icon" alt="" width="24" height="24"/>
+                        <p>{{ appName }}</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div :class="['window', window.anim]" :style="{ top: window.y + 'px', left: window.x + 'px',
                     width: window.width + 'px', height: window.height + 'px',
                     minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px', zIndex: window.z }"
-                    @mousedown="bringToFront($event, window.id)">
+                    @mousedown="bringToFront($event, window.id)" :style="{display: (hide?'none':'block')}">
 
             <div id="titlebar" @mousedown="startDrag($event, window)">
                 <div style="display: inline-flex; align-items: center;">

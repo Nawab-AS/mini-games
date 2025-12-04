@@ -2,24 +2,28 @@ const { createApp, reactive, ref } = Vue;
 
 const windows = reactive([]);
 const currentTime = ref('');
+const openApps = reactive({});
+for (const appname in apps) openApps[appname] = [];
 let topZ = 99;
 
 setTimeout(() => {
-    createWindow(apps["Welcome"]);
+    createWindow("Welcome");
 }, 1000);
 
 
 
 // Opening/closing windows
-function createWindow(options={title:'', url:'', icon:'', width:600, height:400, x:50, y:50, minWidth:300, minHeight:200}) {
+function createWindow(appname, options={}) {
+    options={...apps[appname], ...options};
     const id = Math.random().toString(36).substring(2, 9);
     if (options.url.startsWith('./')) options.url = (new URL(options.url, window.location.href)).href; // convert to absolute URL
     
-    windows.push({ id, anim: 'opening', z: ++topZ, ...options });
+    windows.push({ ...options, id, anim: 'opening', app: appname, hide: false, z: ++topZ });
     setTimeout(() => {
         windows.find(w => w.id == id).anim = '';
     }, 300);
-    return id;
+
+    openApps[appname].push(id);
 }
 
 function closeWindow(e, id) {
@@ -30,6 +34,8 @@ function closeWindow(e, id) {
     setTimeout(() => {
         windows.splice(i, 1);
     }, 300);
+
+    openApps[windows[i].app] = openApps[windows[i].app].filter(wid => wid !== id);
 }
 
 function bringToFront(e, id) { // TODO: fix
@@ -141,6 +147,7 @@ const app = createApp({
     setup() {
         return {
             windows,
+            createWindow,
             closeWindow,
             startDrag,
             startResize,
@@ -148,6 +155,7 @@ const app = createApp({
             openSearch,
             closeSearch,
             search,
+            apps,
             bringToFront,
         }
     }
