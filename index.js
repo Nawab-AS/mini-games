@@ -2,26 +2,20 @@ const { createApp, reactive, ref } = Vue;
 
 const windows = reactive([]);
 const currentTime = ref('');
+let topZ = 99;
 
 setTimeout(() => {
-    createWindow({
-        title: 'Game 1',
-        url: 'https://example.com',
-        width: 300,
-        height: 300,
-        x: 100,
-        y: 100,
-        minWidth: 150,
-        minHeight: 150,
-    });
+    createWindow(apps["Welcome"]);
 }, 1000);
 
 
 
 // Opening/closing windows
-function createWindow(options={title:'', url:'', width:600, height:400, x:50, y:50, minWidth:300, minHeight:200}) {
+function createWindow(options={title:'', url:'', icon:'', width:600, height:400, x:50, y:50, minWidth:300, minHeight:200}) {
     const id = Math.random().toString(36).substring(2, 9);
-    windows.push({ id, anim: 'opening', ...options });
+    if (options.url.startsWith('./')) options.url = (new URL(options.url, window.location.href)).href; // convert to absolute URL
+    
+    windows.push({ id, anim: 'opening', z: ++topZ, ...options });
     setTimeout(() => {
         windows.find(w => w.id == id).anim = '';
     }, 300);
@@ -36,6 +30,14 @@ function closeWindow(e, id) {
     setTimeout(() => {
         windows.splice(i, 1);
     }, 300);
+}
+
+function bringToFront(e, id) { // TODO: fix
+    e.stopPropagation();
+    const window = windows.find(win => win.id === id);
+    if (!window) return;
+    window.z = ++topZ;
+    windows.sort((a, b) => a.z - b.z);
 }
 
 // Dragging windows
@@ -88,8 +90,6 @@ document.addEventListener('mouseup', (e) => {
 
 document.addEventListener('mousemove', (e) => {
     if (dragData) {
-        e.preventDefault();
-        e.stopPropagation();
         const dx = e.clientX - dragData.startX;
         const dy = e.clientY - dragData.startY;
         dragData.window.x = dragData.origX + dx;
@@ -98,8 +98,6 @@ document.addEventListener('mousemove', (e) => {
     }
 
     if (resizeData) {
-        e.preventDefault();
-        e.stopPropagation();
         const dx = e.clientX - resizeData.startX;
         const dy = e.clientY - resizeData.startY;
         let newW = Math.max(resizeData.minW, Math.round(resizeData.origW + dx));
@@ -150,6 +148,7 @@ const app = createApp({
             openSearch,
             closeSearch,
             search,
+            bringToFront,
         }
     }
 });

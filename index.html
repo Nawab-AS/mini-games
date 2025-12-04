@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games-OS</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./apps.js"></script>
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
 </head>
@@ -14,7 +15,15 @@
             <div class="leftSection">
                 <button id="linuxButton" @click="openSearch"></button>
                 <input id="searchBox" placeholder="Type here to search" @focus="openSearch" @blur="closeSearch" v-model="search"/>
+
+                <div id="appList" v-for="window in windows" :key="window.id">
+                    <div>
+                        <img :src="window.icon" alt="" width="24" height="24"/>
+                        <p>{{ window.title }}</p>
+                    </div>
+                </div>
             </div>
+
             <div class="rightSection">
                 <div id="timeDisplay">{{ currentTime }}</div>
             </div>
@@ -24,10 +33,14 @@
     <div id="windowManager" v-for="window in windows" :key="window.id">
         <div :class="['window', window.anim]" :style="{ top: window.y + 'px', left: window.x + 'px',
                     width: window.width + 'px', height: window.height + 'px',
-                    minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px' }">
+                    minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px', zIndex: window.z }"
+                    @mousedown="bringToFront($event, window.id)">
 
             <div id="titlebar" @mousedown="startDrag($event, window)">
-                <h2>{{ window.title }}</h2>
+                <div style="display: inline-flex; align-items: center;">
+                    <img :src="window.icon" alt="" width="24" height="24"/>
+                    <h2>{{ window.title }}</h2>
+                </div>
                 <button @click="closeWindow($event, window.id)">X</button>
             </div>
             

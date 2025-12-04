@@ -176,6 +176,16 @@
     background-color: #555;
 }
 
+
+#appList {
+    height: var(--taskbar-height);
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
 #timeDisplay {
     height: var(--taskbar-height);
     padding: 0 7px;
