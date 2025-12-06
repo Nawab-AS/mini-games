@@ -1,9 +1,10 @@
-const { createApp, reactive, ref } = Vue;
+const { createApp, reactive, ref, computed } = Vue;
 
 const windows = reactive([]);
 const currentTime = ref('');
 const hoveredApp = ref(null);
 const editingWindow = ref(false);
+const fuzzySearchThreshold = 3;
 let topZ = 99;
 
 setTimeout(() => {
@@ -16,8 +17,12 @@ function createWindow(appname, options={}) {
     options={...apps[appname], ...options};
     const id = Math.random().toString(36).substring(2, 9);
     if (options.url.startsWith('./')) options.url = (new URL(options.url, window.location.href)).href; // convert to absolute URL
-    if (options.x === undefined) options.x = Math.random() * (window.innerWidth - options.width);
-    if (options.y === undefined) options.y = Math.random() * (window.innerHeight - options.height - 40) + 40;
+    // Ensure window is always fully visible and not under the taskbar
+    const margin = 20;
+    const maxX = Math.max(0, window.innerWidth - (options.width || 400) - margin);
+    const maxY = Math.max(0, window.innerHeight - (options.height || 300) - margin - 40 - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 35));
+    if (options.x === undefined) options.x = Math.round(Math.random() * maxX) + margin / 2;
+    if (options.y === undefined) options.y = Math.round(Math.random() * maxY) + margin / 2;
     windows.push({ ...options, id, anim: 'opening', app: appname, hidden: false, z: ++topZ });
     setTimeout(() => {
         windows.find(w => w.id == id).anim = '';
@@ -160,6 +165,17 @@ function openSearch() {
     search.value = '';
 }
 
+const filteredApps = computed(() => {
+    const results = fuzzysort.go(search.value, Object.keys(apps), { all: true });
+
+    let filtered = [];
+    for (let i = 0; i < results.length; i++) {
+        if (results[i].score < -fuzzySearchThreshold) continue;
+        filtered.push(results[i].target);
+    }
+    return filtered;
+});
+
 
 // time
 function updateTime() {
@@ -190,6 +206,7 @@ const app = createApp({
             currentTime,
             openSearch,
             search,
+            filteredApps,
             apps,
             bringToFront,
             minimizeWindow,

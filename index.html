@@ -6,6 +6,7 @@
     <title>Games-OS</title>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.0.2/fuzzysort.min.js"></script>
     <script src="./apps.js"></script>
     <script src="./index.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
@@ -14,9 +15,10 @@
     <div id="screen">
         <div id="taskbar">
             <div class="leftSection">
-                <button id="linuxButton" @click="openSearch"></button>
-                <input id="searchBox" placeholder="Type here to search!" @focus="openSearch"
-                        @blur="search = null" v-model="search"/>
+                <div id="search">
+                    <button id="linuxButton" @click="openSearch"></button>
+                    <input id="searchBox" placeholder="Type here to search!" @focus="openSearch" @blur="search = null" v-model="search"/>
+                </div>
 
                 <div id="appList">
                     <div id="newWindow" @click="createWindow(appName)"
@@ -39,6 +41,19 @@
             <div class="rightSection">
                 <div id="timeDisplay">{{ currentTime }}</div>
             </div>
+        </div>
+
+        <div id="searchResults" v-if="search !== null">
+            <div v-if="filteredApps.length === 0">
+                <p>No results found.</p>
+            </div>
+            <div v-for="appName in filteredApps" :key="appName">
+            <div class="searchResult"
+                @mousedown.stop="createWindow(appName); search = null">
+                <img :src="apps[appName].icon" alt="" width="22" height="22"/>
+                <p>{{ appName }}</p>
+            </div>
+        </div>
         </div>
     </div>
 

@@ -198,6 +198,13 @@ body {margin: 0; padding: 0; overflow: hidden;}
 }
 
 
+#search {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    height: var(--taskbar-height);
+}
+
 #linuxButton {
     margin-left: 5px;
     width: 45px;
@@ -238,6 +245,45 @@ body {margin: 0; padding: 0; overflow: hidden;}
     background-color: #555;
 }
 
+#searchResults {
+    position: fixed;
+    bottom: var(--taskbar-height);
+    left: 5px;
+    width: 300px;
+    max-height: 300px;
+    background-color: #333;
+    border: 2px solid #000;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    overflow-y: auto;
+    z-index: 11;
+}
+
+#searchResults .searchResult {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    background-color: #333;
+    border-bottom: 1px solid #444;
+    padding: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition-duration: 0.2s;
+    font-size: 13px;
+}
+
+#searchResults .searchResult:hover {
+    background-color: var(--taskbar-hover-color);
+    color: #fff;
+}
+
+#searchResults .searchResult img { vertical-align: middle; }
+
+#searchResults .searchResult p { margin: 5px 0; }
+
+
+
+/* taskbar apps list */
 
 #appList {
     height: var(--taskbar-height);
