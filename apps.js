@@ -16,7 +16,7 @@ const apps = {
         "url": "./games/tic-tac-toe/index.html",
         "icon": "./games/tic-tac-toe/icon.svg",
         "description": "Play Tic Tac Toe against the computer!",
-        "category": "Game",
+        "category": "Web",
         "width": 400,
         "height": 540,
         "minWidth": 400,
@@ -32,5 +32,27 @@ const apps = {
         "height": 700,
         "minWidth": 600,
         "minHeight": 400,
+    },
+
+    "Calculator": {
+        "url": "./games/calculator/index.html",
+        "icon": "./games/calculator/icon.svg",
+        "description": "A simple calculator app.",
+        "category": "Utility",
+        "width": 300,
+        "height": 400,
+        "minWidth": 300,
+        "minHeight": 400,
+    },
+
+    "Snake": {
+        "url": "./games/snake/index.html",
+        "icon": "./games/snake/icon.svg",
+        "description": "Classic Snake game.",
+        "category": "Games",
+        "width": 400,
+        "height": 500,
+        "minWidth": 400,
+        "minHeight": 500,
     },
 };

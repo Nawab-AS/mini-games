@@ -166,14 +166,29 @@ function openSearch() {
 }
 
 const filteredApps = computed(() => {
-    const results = fuzzysort.go(search.value, Object.keys(apps), { all: true });
+    const results = fuzzysort.go(search.value, Object.keys(apps), {all: true});
 
+    // filter out low-score results + convert to array
     let filtered = [];
     for (let i = 0; i < results.length; i++) {
         if (results[i].score < -fuzzySearchThreshold) continue;
-        filtered.push(results[i].target);
+        const appName = results[i].target;
+        filtered.push({ appName, category: apps[appName].category || 'Other' });
     }
-    return filtered;
+
+    // group filtered apps by category
+    const grouped = {};
+    filtered.forEach((_) => {
+        let { appName, category } = _;
+        category = category || 'Other';
+        if (!grouped[category]) grouped[category] = [];
+        grouped[category].push(appName);
+    });
+    for (const category in grouped) {
+        grouped[category].sort();
+    }
+    const result = { length: filtered.length, apps: grouped, topResult: filtered[0]?.appName || null };
+    return result;
 });
 
 

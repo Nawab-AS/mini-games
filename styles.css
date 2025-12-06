@@ -281,6 +281,55 @@ body {margin: 0; padding: 0; overflow: hidden;}
 
 #searchResults .searchResult p { margin: 5px 0; }
 
+#searchResults .appCategory {
+    margin-bottom: 12px;
+    padding: 8px 0 0 0;
+    border-top: 2px solid #444;
+}
+
+#searchResults .categoryTitle {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    padding-left: 5px;
+    letter-spacing: 0.5px;
+}
+
+#searchResults .appCategory .app {
+    background: #222;
+    color: #ccc;
+    margin: 3px 8px 3px 16px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#searchResults .appCategory .app img { vertical-align: middle; }
+
+#searchResults .appCategory .app:hover {
+    background: var(--taskbar-hover-color);
+    color: #fff;
+}
+
+#searchResults p {
+    margin: 8px 0;
+    font-size: 14px;
+    text-align: left;
+}
+
+#searchResults .noResults {
+    color: #eb3030;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 15px;
+}
+
 
 
 /* taskbar apps list */
