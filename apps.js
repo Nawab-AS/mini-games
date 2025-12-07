@@ -16,22 +16,11 @@ const apps = {
         "url": "./games/tic-tac-toe/index.html",
         "icon": "./games/tic-tac-toe/icon.svg",
         "description": "Play Tic Tac Toe against the computer!",
-        "category": "Web",
-        "width": 400,
-        "height": 540,
-        "minWidth": 400,
+        "category": "Games",
+        "width": 300,
+        "height": 500,
+        "minWidth": 275,
         "minHeight": 540,
-    },
-
-    "Reddit": {
-        "url": "https://www.reddit.com/",
-        "icon": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
-        "description": "Browse Reddit in a window.",
-        "category": "Web",
-        "width": 900,
-        "height": 700,
-        "minWidth": 600,
-        "minHeight": 400,
     },
 
     "Calculator": {

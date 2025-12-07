@@ -6,8 +6,9 @@ body {margin: 0; padding: 0; overflow: hidden;}
 
 :root {
     --taskbar-height: 35px;
+    --taskbar-window-list-width: 150px;
     --taskbar-hover-color: #444;
-    --taskbar-app-width: 150px;
+    --taskbar-app-width: 30px;
 }
 
 
@@ -18,13 +19,13 @@ body {margin: 0; padding: 0; overflow: hidden;}
 }
 
 .window {
-    position: absolute;
+    position: fixed;
     border: 2px solid #000;
     background-color: #fff;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     overflow: hidden;
     box-sizing: border-box;
-    z-index: 99;
+    z-index: 1;
 }
 
 .window iframe {
@@ -255,7 +256,7 @@ body {margin: 0; padding: 0; overflow: hidden;}
     border: 2px solid #000;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     overflow-y: auto;
-    z-index: 11;
+    z-index: 99999;
 }
 
 #searchResults .searchResult {
@@ -339,10 +340,9 @@ body {margin: 0; padding: 0; overflow: hidden;}
     padding: 0 5px;
     display: flex;
     align-items: center;
-    gap: 5px;
 }
 
-#appList > #newWindow {
+#appList > .appIcon {
     color: #ccc;
     height: var(--taskbar-height);
     width: var(--taskbar-app-width);
@@ -355,69 +355,43 @@ body {margin: 0; padding: 0; overflow: hidden;}
     transition-duration: 0.2s;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-#appList > #newWindow > img {
+#appList > .appIcon > img {
     vertical-align: middle;
-    margin-right: 5px;
 }
 
-#appList > #newWindow > p {
-    margin: 0;
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#appList > #newWindow.open {
+#appList > .appIcon.open {
     height: calc(var(--taskbar-height) - 3.5px);
     border-bottom: 3.5px solid #fff;
     color: #fff;
 }
 
-
-/* AI generated selector lol
-selects #newWindow but NOT the div#windowList or its children when hovered */
-#appList > #newWindow:hover:not(:has(#windowList:hover, #windowList *:hover)) {
+#appList > .appIcon:hover {
     background-color: var(--taskbar-hover-color);
     color: #fff;
 }
 
-#appList > #newWindow:hover:not(:has(:not(p):hover)),
-#appList > #newWindow > p:hover {
-    background-color: var(--taskbar-hover-color);
-}
-
-#appList > #newWindow:hover:not(:has(:not(p):hover)),
-#appList > #newWindow > p:hover {
-    background-color: var(--taskbar-hover-color);
-}
-
-
-#appList > #newWindow:hover {
-    background-color: var(--taskbar-hover-color);
-    color: #fff;
-}
-
-#windowList {
-    position: absolute;
+.windowList {
+    position: fixed;
     bottom: var(--taskbar-height);
+    z-index: 99999;
 }
 
-#windowList > div {
+.windowListItem {
     margin: 0;
     padding: 0;
     transform: translateX(5px);
     height: 23px;
-    width: calc(var(--taskbar-app-width) - 5px);
+    width: var(--taskbar-window-list-width);
     margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#windowList > div > p {
+.windowListItem > p {
     margin: 0;
     padding: 2px 5px;
     color: #fff;
@@ -431,11 +405,11 @@ selects #newWindow but NOT the div#windowList or its children when hovered */
     white-space: nowrap;
 }
 
-#windowList > div:hover {
+.windowListItem:hover {
     background-color: var(--taskbar-hover-color);
 }
 
-#windowList > div > button {
+.windowListItem > button {
     margin-right: 2px;
     padding: 2px 5px;
     height: 20px;

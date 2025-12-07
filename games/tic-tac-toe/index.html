@@ -1,130 +1,38 @@
-<!-- A simple tic tac toe game. Adapted from https://github.com/ireade/tictactoe -->
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tic Tac Toe</title>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet'>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script type="text/javascript" src="./script.js" defer></script>
-
-	<style>
-
-		html {
-			font-family: 'Raleway', sans-serif;
-			font-weight: 400;
-			font-size: 12px;
-		}
-
-		.container {
-			max-width: 400px;
-			margin: 2em auto;
-			text-align: center;
-			line-height: 1.5;
-		}
-
-		h1 {
-			margin: 1em auto;
-		}
-
-		a {
-			text-decoration: none;
-			color: pink;
-			font-weight: 700;
-		}
-
-		span.red {
-			color: red;
-			font-weight: 700;
-		}
-
-		span.blue {
-			color: blue;
-			font-weight: 700;
-		}
-
-		span.pink {
-			color: pink;
-		}
-
-		.button {
-			width: 90px;
-			height: 15px;
-			border-radius: 5px;
-			padding: 5px;
-			margin: 0 auto;
-
-			cursor: pointer;
-			text-align: center;
-
-			background-color: pink;
-			font-size: 13px;
-			color: #fff;
-		}
-
-		.tic-tac-toe {
-			width: 315px;
-			height: auto;
-			margin: 0 auto;
-
-		}
-
-		.tile {
-			height: 100px;
-			width: 100px;
-			display: inline-block;
-			cursor: pointer;
-
-			position: relative;
-			vertical-align: top;
-
-			padding: 15px;
-			margin-bottom: 5px;
-			box-sizing: border-box;
-
-			color: #fff;
-			font-size: 60px;
-			text-align: center;
-		}
-
-		.free {
-			background-color: #999;
-		}
-
-
-		.O-play {
-			background-color: blue;
-		}
-
-		.X-play {
-			background-color: red;
-		}
-	</style>
+	<script src="./index.js" defer></script>
+	<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
-
-	<div class="container">
-		<h1>Tic Tac Toe</h1>
-		<div class="button" id="reset-button">Reset Board</div>
+	<h1>Tic Tac Toe</h1>
+	<div style="margin-bottom:10px">
+		<label><input type="checkbox" id="vsComputer"> Play against Computer</label>
+		<br />
+		<span id="hardness-container" style="display:none; margin-left:10px;">
+			Hardness:
+			<select id="hardness">
+				<option value="easy">Easy</option>
+				<option value="medium">Medium</option>
+				<option value="hard">Hard</option>
+			</select>
+		</span>
 	</div>
-
-	<div class="tic-tac-toe">
-		<div id="square1" class="tile free"></div>
-		<div id="square2" class="tile free"></div>
-		<div id="square3" class="tile free"></div>
-		<div id="square4" class="tile free"></div>
-		<div id="square5" class="tile free"></div>
-		<div id="square6" class="tile free"></div>
-		<div id="square7" class="tile free"></div>
-		<div id="square8" class="tile free"></div>
-		<div id="square9" class="tile free"></div>
+	<div id="status">Player X's turn</div>
+	<div class="board" id="board">
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
+		<button class="cell"></button>
 	</div>
-
-	<footer class="container">Made with <span class="pink">&#9829</span> by <a href="http://www.ireaderinokun.com" target="_blank">Ire Aderinokun</a><footer>
-
+	<button onclick="resetGame()">Restart</button>
 </body>
 </html>

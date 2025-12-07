@@ -108,19 +108,25 @@ document.addEventListener('mousemove', (e) => {
     if (dragData) {
         const dx = e.clientX - dragData.startX;
         const dy = e.clientY - dragData.startY;
-        dragData.window.x = dragData.origX + dx;
-        dragData.window.y = dragData.origY + dy;
-        return;
+        const taskbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 35;
+        const maxY = window.innerHeight - (dragData.window.height || 300) - taskbarHeight;
+        const maxX = window.innerWidth - (dragData.window.width || 400);
+        dragData.window.x = Math.max(0, Math.min(maxX, dragData.origX + dx));
+        dragData.window.y = Math.max(0, Math.min(maxY, dragData.origY + dy));
     }
 
     if (resizeData) {
         const dx = e.clientX - resizeData.startX;
         const dy = e.clientY - resizeData.startY;
+        const taskbarHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 35;
         let newW = Math.max(resizeData.minW, Math.round(resizeData.origW + dx));
         let newH = Math.max(resizeData.minH, Math.round(resizeData.origH + dy));
+        const maxH = window.innerHeight - resizeData.window.y - taskbarHeight;
+        const maxW = window.innerWidth - resizeData.window.x;
+        newW = Math.min(newW, maxW);
+        newH = Math.min(newH, maxH);
         resizeData.window.width = newW;
         resizeData.window.height = newH;
-        return;
     }
 });
 
@@ -207,6 +213,23 @@ setInterval(updateTime, 1000);
 updateTime();
 
 
+function deselectSearchbar() {
+    document.getElementById('searchBox').blur();
+    search.value = null;
+}
+
+function getAppIconPosition(appName) {
+    let windowListWidth = getComputedStyle(document.documentElement).getPropertyValue('--windowlist-width') || '150px';
+    windowListWidth = parseInt(windowListWidth.slice(0, -2));
+    const appIcons = document.querySelectorAll('.appIcon');
+    for (let icon of appIcons) {
+        if (icon.dataset.app === appName) {
+            const rect = icon.getBoundingClientRect();
+            return rect.left - windowListWidth/2 + rect.width/2;
+        }
+    }
+}
+
 
 // mount Vue
 const app = createApp({
@@ -227,6 +250,8 @@ const app = createApp({
             minimizeWindow,
             focusWindow,
             hoveredApp,
+            deselectSearchbar,
+            getAppIconPosition,
         }
     }
 });

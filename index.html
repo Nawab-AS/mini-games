@@ -12,60 +12,12 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body v-cloak>
-    <div id="screen">
-        <div id="taskbar">
-            <div class="leftSection">
-                <div id="search">
-                    <button id="linuxButton" @click="openSearch"></button>
-                    <input id="searchBox" placeholder="Type here to search!" @focus="openSearch" @blur="search = null" v-model="search"
-                    @keydown.enter="if (filteredApps.length > 0) { createWindow(filteredApps.topResult); search = null }" @keydown.esc="search = null"/>
-                </div>
-
-                <div id="appList">
-                    <div id="newWindow" @click="createWindow(appName)"
-                            :class="[windows.some(w => w.app === appName) ? 'open' : '']"
-                            @mouseenter="hoveredApp = appName" @mouseleave="hoveredApp = null"
-                            v-for="(app, appName) in apps" :key="appName">
-                        <img :src="app.icon" alt="" width="24" height="24"/>
-                        <p>{{ appName }}</p>
-                        <div id="windowList" v-show="hoveredApp === appName">
-                            <div v-for="window in windows.filter(w => w.app === appName)" :key="window.id" @click="focusWindow($event, window.id, true)"
-                                    :style="{ backgroundColor: window.hidden ? '#888' : '#555' }">
-                                <p>{{ window.app }}</p>
-                                <button @click.stop="closeWindow($event, window.id)">X</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rightSection">
-                <div id="timeDisplay">{{ currentTime }}</div>
-            </div>
-        </div>
-
-        <div id="searchResults" v-if="search !== null">
-            <div v-if="filteredApps.length === 0">
-                <p>No results found.</p>
-            </div>
-            <div v-else>
-                <div v-for="(filteredApps, category) in filteredApps.apps" :key="category" class="appCategory">
-                    <h3 class="categoryTitle">{{ category }}</h3>
-                    <div v-for="app in filteredApps" class="app" @click="createWindow(app)">
-                        <img :src="apps[app].icon" alt="" width="18" height="18"/>
-                        <p>{{ app }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="windowManager">
         <div v-for="window in windows" :key="window.id">
 
             <div :class="['window', window.anim]" :style="{ top: (window.hidden ? 999999 : window.y) + 'px', left: window.x + 'px',
                     width: window.width + 'px', height: window.height + 'px',
-                    minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px', zIndex: window.z }"
+                    minWidth: window.minWidth + 'px', minHeight: window.minHeight + 'px' }"
                     @mousedown="bringToFront($event, window.id)">
                     
                 <div id="titlebar" @mousedown="startDrag($event, window)">
@@ -82,6 +34,63 @@
                 <iframe :src="window.url" frameborder="0" :style="{ pointerEvents: editingWindow ? 'none' : 'auto' }"></iframe>
 
                 <div class="resize-handle" @mousedown="startResize($event, window)"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="screen">
+        <div id="taskbar">
+            <div class="leftSection">
+                <div id="search">
+                    <button id="linuxButton" @click="openSearch"></button>
+                    <input id="searchBox" placeholder="Type here to search!" @focus="openSearch" @blur="deselectSearchbar()" v-model="search"
+                    @keydown.enter="if (filteredApps.length > 0) { createWindow(filteredApps.topResult); deselectSearchbar(); }" @keydown.esc="deselectSearchbar()"/>
+                </div>
+
+                <div id="appList">
+                    <div class="appIcon" @click="createWindow(appName)"
+                            :class="[windows.some(w => w.app === appName) ? 'open' : '']"
+                            @mouseenter="hoveredApp = appName; deselectSearchbar()" @mouseleave="hoveredApp = null"
+                            v-for="(app, appName) in apps" :key="appName"
+                            :data-app="appName">
+                        <img :src="app.icon" alt="" width="24" height="24"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rightSection">
+                <div id="timeDisplay">{{ currentTime }}</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="searchResults" v-if="search !== null" @mousedown.stop>
+        <div v-if="filteredApps.length === 0">
+            <p>No results found.</p>
+        </div>
+        <div v-else>
+            <div v-for="(filteredApps, category) in filteredApps.apps" :key="category" class="appCategory">
+                <h3 class="categoryTitle">{{ category }}</h3>
+                <div v-for="app in filteredApps" class="app" @mousedown.stop="createWindow(app); deselectSearchbar()">
+                    <img :src="apps[app].icon" alt="" width="18" height="18"/>
+                    <p>{{ app }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div v-for="(app, appName) in apps" :key="'windowlist-' + appName">
+        <div class="windowList" v-show="hoveredApp === appName" :data-app="appName" :style="{ left: getAppIconPosition(appName) + 'px' }"
+             @mouseenter="hoveredApp = appName" @mouseleave="hoveredApp = null">
+            <div v-for="window in windows.filter(w => w.app === appName)" :key="window.id" 
+                 class="windowListItem"
+                 @click="focusWindow($event, window.id, true)"
+                 :style="{ backgroundColor: window.hidden ? '#888' : '#555' }">
+                <p>{{ window.app }}</p>
+                <button @click.stop="closeWindow($event, window.id)">X</button>
             </div>
         </div>
     </div>
