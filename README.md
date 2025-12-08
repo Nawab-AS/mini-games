@@ -5,3 +5,5 @@ A better recreation of my previous project [Retro-OS](https://github.com/Nawab-A
 
 ## Acknowledgements
 Part of the CSS was AI generated, the rest of the code was ~90% human written.
+
+The minesweeper games was taken from [adlogi](https://github.com/adlogi/minesweeper) and modified to fit into the windows.

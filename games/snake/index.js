@@ -101,7 +101,7 @@ let mouseJustReleased = false;
 function mousePressed() { mouseJustReleased = false; }
 function mouseReleased() {
     mouseJustReleased = true;
-    setTimeout(() => { mouseJustReleased = false; }, (1000 / frameRate())*1.1);
+    setTimeout(() => { mouseJustReleased = false; }, (1000 / frameRate())*0.9);
 }
 
 
