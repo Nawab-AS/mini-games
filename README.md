@@ -2,6 +2,9 @@
 
 A better recreation of my old project [Retro-OS](https://github.com/nawab-as/retro-os) with a focus on games.
 
+> Note for siege reviewers:
+> This project was originally made for Shipwrecked, but now rewritten from scratch as Game-OS, so technically not updates siege project
+
 ## Live Demo
 
 You can try out the live demo [here](https://nawab-as.github.io/Game-OS).
